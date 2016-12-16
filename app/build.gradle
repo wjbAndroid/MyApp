@@ -17,7 +17,26 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
+    sourceSets {
+        debug {
+            res.srcDirs = ['res']
+        }
+        debug.setRoot('build-types/debug')
+
+        beta {
+            res.srcDirs = ['res']
+        }
+        beta.setRoot('build-types/beta')
+
+        dev {
+            res.srcDirs = ['res']
+        }
+        dev.setRoot('build-types/dev')
+    }
 }
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
