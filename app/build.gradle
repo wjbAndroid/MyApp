@@ -16,6 +16,22 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        dev {
+            initWith(buildTypes.release)
+            applicationIdSuffix ".dev"
+            versionNameSuffix "D"
+        }
+
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "D"
+        }
+        beta {
+            initWith(buildTypes.release)
+            applicationIdSuffix ".beta"
+            versionNameSuffix "B"
+        }
     }
 
 
