@@ -4,35 +4,71 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
     defaultConfig {
+
+        def env = System.getenv()
+
+        versionCode env['BUILD_NUMBER'] as Integer ?: 0
+        versionName "1.0.0." + (env['BUILD_NUMBER'] as Integer ?: 0)
+        project.ext.set("archivesBaseName", "MyApp-" + versionName);
+        multiDexEnabled true
         applicationId "com.tplink.app"
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion 18
+        targetSdkVersion 24
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+    if (project.hasProperty("kc100.properties")
+            && new File(project.property("kc100.properties")).exists()) {
+
+        Properties props = new Properties()
+        props.load(new FileInputStream(file(project.property("kc100.properties"))))
+
+        signingConfigs {
+            release {
+                storeFile file("/var/lib/jenkins/tplink_kc100_android.jks")
+                storePassword props['KSTOREPWD']
+                keyAlias "TPLINK_KC100_Android"
+                keyPassword props['KEYPWD']
+            }
         }
 
-        dev {
-            initWith(buildTypes.release)
-            applicationIdSuffix ".dev"
-            versionNameSuffix "D"
-        }
+        buildTypes {
+            release {
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                shrinkResources true
+                signingConfig signingConfigs.release
+                zipAlignEnabled true
+            }
 
-        debug {
-            applicationIdSuffix ".debug"
-            versionNameSuffix "D"
+            dev {
+                initWith(buildTypes.release)
+                applicationIdSuffix ".dev"
+                versionNameSuffix "D"
+            }
+
+            debug {
+                applicationIdSuffix ".debug"
+                versionNameSuffix "D"
+            }
+            beta {
+                initWith(buildTypes.release)
+                applicationIdSuffix ".beta"
+                versionNameSuffix "B"
+            }
         }
-        beta {
-            initWith(buildTypes.release)
-            applicationIdSuffix ".beta"
-            versionNameSuffix "B"
+    } else {
+        buildTypes {
+            debug {
+                applicationIdSuffix ".dev"
+                versionNameSuffix "D"
+                debuggable true
+            }
         }
     }
+
+
 
 
     sourceSets {
