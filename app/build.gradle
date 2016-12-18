@@ -1,15 +1,35 @@
 apply plugin: 'com.android.application'
 
+ext.vAppName = 'MyApp';
+
+ext.vMajor = 1
+ext.vMidor = 0
+ext.vMinor = 0
+
+def computeVersionName() {
+    return String.format('%d.%d.%d', vMajor, vMidor, vMinor);
+
+}
+
+def computeVersionCode() {
+    def env = System.getenv()
+    return env['BUILD_NUMBER'] as Integer ?: 0;
+
+}
+
+def getAppName(){
+    return vAppName + computeVersionName();
+}
+
+
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
     defaultConfig {
-
-        def env = System.getenv()
-
-        versionCode env['BUILD_NUMBER'] as Integer ?: 0
-        versionName "1.0.0." + (env['BUILD_NUMBER'] as Integer ?: 0)
-        project.ext.set("archivesBaseName", "MyApp-" + versionName);
+        versionCode computeVersionCode()
+        versionName computeVersionName()
+        project.ext.set("archivesBaseName", getAppName());
         multiDexEnabled true
         applicationId "com.tplink.app"
         minSdkVersion 18
