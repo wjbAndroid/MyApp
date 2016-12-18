@@ -17,6 +17,10 @@ def computeVersionCode() {
 
 }
 
+def getAppName() {
+    return vAppName + '-' + computeVersionName();
+}
+
 
 android {
     compileSdkVersion 25
@@ -24,7 +28,7 @@ android {
     defaultConfig {
         versionCode computeVersionCode()
         versionName computeVersionName()
-        project.ext.set("archivesBaseName", vAppName);
+        project.ext.set("archivesBaseName", getAppName());
         multiDexEnabled true
         applicationId "com.tplink.app"
         minSdkVersion 18
