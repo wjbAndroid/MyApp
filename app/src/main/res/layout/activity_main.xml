@@ -10,8 +10,26 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.tplink.app.MainActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/test1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="Test1" />
+
+    <Button
+        android:id="@+id/test2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/test1"
+        android:layout_margin="10dp"
+        android:text="Test2" />
+
+    <Button
+        android:id="@+id/test3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/test2"
+        android:layout_margin="10dp"
+        android:text="Test3" />
+
 </RelativeLayout>
